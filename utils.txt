@@ -1,0 +1,54 @@
+//possíveis problemas no vs code no linux
+//maximo de watchers atingidos
+//"Visual Studio Code is unable to watch for file changes in this large workspace" (error ENOSPC)#
+//https://code.visualstudio.com/docs/setup/linux#_visual-studio-code-is-unable-to-watch-for-file-changes-in-this-large-workspace-error-enospc
+
+// arquivos padrões para o .gitignore
+https://github.com/github/gitignore
+
+//Extensions para o VS Code
+Color Highlight => já exibe a cor quando usados código rgb nos arquivos (ex: #999)
+C#
+GitLens — Git supercharged
+TSLint => Typescript plugin
+Material Icon Theme => Icones para identificar melhor os tipos de arquivos e pastas
+vscode-nuget-package-manager
+Rocketseat React Native
+Rocketseat ReactJS
+
+
+// extensão do node para ouvir alterações do serviço em execução
+yarn add nodemon -D
+// para usar basta inserir uma tag "scripts" no package.json. conforme abaixo:
+//"scripts": {
+//    "dev": "nodemon src/server.js"
+//  },
+//em seguida rodar no terminal: yarn dev (que é o nome da parametro criado na tag "scripts")
+yarn dev
+
+////biblioteca para manusear chamadas http (get, post etc)
+yarn add axios
+
+//Utilizar variaveis de ambiente no node
+//https://medium.com/the-node-js-collection/making-your-node-js-work-everywhere-with-environment-variables-2da8cdf6e786
+npm install dotenv
+//Read the .env File
+const dotenv = require('dotenv');
+dotenv.config();
+
+//criar projeto padrão no react
+//será incluído transpiladores etc
+yarn create react-app <<nome_pasta>>
+
+//criar rotas no react - APENAS PARA HTML. 
+//existe plugin para React Native
+yarn add react-router-dom
+
+//instalando o React-Native
+npx react-native init <<nome do projeto>>>
+
+//dicas para instalar o emulador do android. feito pela Rocketseat
+https://docs.rocketseat.dev ou https://docs.rocketseat.dev/ambiente-react-native/introducao
+
+//remover configurações do git da pasta
+rm -rf .git
