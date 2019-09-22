@@ -44,7 +44,7 @@ module.exports = {
         console.log(username);
 
         //verificar se o usuário não existe
-        const existUser = await Dev.findOne({ user: username });
+        const existUser = await Dev.findOne({ user: username.toLowerCase() });
         if (existUser) {
             return res.json(existUser);
         }
@@ -71,7 +71,7 @@ module.exports = {
 
         const dev = await Dev.create({
             name,
-            user: username,
+            user: username.toLowerCase(),
             bio,
             avatar
         });
