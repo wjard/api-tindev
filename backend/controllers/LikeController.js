@@ -2,6 +2,10 @@ const Dev = require('../models/Dev');
 
 module.exports = {
     async store(req, res) {
+
+        //acessar dados do socket e usuario conectados
+        console.log(req.socket, req.connectedUsers)
+
         //foi usado dados no header pois não tem implementação de
         //autenticação (jwt por exemplo) de usuários...rs
         //const user = req.headers.user;
@@ -19,10 +23,20 @@ module.exports = {
 
         if (likeDev.likes && likeDev.likes.includes(loggedDev._id)) {
             console.log(`Match between ${loggedDev.name} <=> ${likeDev.name}`);
+
+            const loggedSocket = req.connectedUsers[user];
+            const targetSocket = req.connectedUsers[_id];
+            //envia uma mensagem para os usários, caso estejam logados
+            if (loggedSocket) {                
+                req.socket.to(loggedSocket).emit('match', likeDev);
+            }
+            if (targetSocket) {                
+                req.socket.to(targetSocket).emit('match', loggedDev);
+            }
         }
 
         if (loggedDev.dislikes.includes(likeDev._id)) {
-            loggedDev.dislikes.remove(likeDev._id);    
+            loggedDev.dislikes.remove(likeDev._id);
         }
 
         if (loggedDev.likes.includes(likeDev._id)) {

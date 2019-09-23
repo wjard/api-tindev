@@ -14,10 +14,36 @@ const routes = require('./routes');
 
 dotenv.config();
 
-const server = express();
 const port = process.env.PORT || 3000;
-const figlet = require("figlet");
+const httpServer = express();
+const server = require('http').Server(httpServer);
 
+const connectedUsers = [];
+
+//websocket
+const socket = require('socket.io')(server);
+socket.on('connection', con => {
+    console.log(`Nova conexão: ${con.id}`);
+
+    const { user } = con.handshake.query;
+    console.log(user, con.id);
+
+    connectedUsers[user] = con.id;
+    /*
+    con.on('opa', result => {
+        console.log(`Client message: ${JSON.stringify(result)}`);
+    });
+    //teste de envio de  mensagem para o client
+    setTimeout(() => {
+        con.emit('e ai?', {
+            message: 'Aqui tudo beleza. E aí?'
+        });
+    }, 5000);
+    */
+});
+
+/*
+const figlet = require("figlet");
 const handler = (req, res) => {
     console.log('Server received request.');
     figlet('Hello World!!!', (err, data) => {
@@ -30,15 +56,23 @@ const handler = (req, res) => {
     });
 };
 //const server = http.createServer(handler);
+*/
 
 const mongo_uri = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PWD}@${process.env.MONGO_URL}/${process.env.MONGO_DB}?retryWrites=true&w=majority`;
 console.log(mongo_uri);
 mongoose.connect(mongo_uri, { useNewUrlParser: true });
 
-server.use(cors());
-server.use(express.json());
+//midleware para passagem do socket para demais controllers
+httpServer.use((req, res, next) => {
+    req.socket = socket;
+    req.connectedUsers = connectedUsers;
 
-server.use(routes);
+    return next();
+});
+
+httpServer.use(cors());
+httpServer.use(express.json());
+httpServer.use(routes);
 
 server.listen(port, err => {
     if (err) {
